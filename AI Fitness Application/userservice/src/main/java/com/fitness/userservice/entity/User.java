@@ -1,6 +1,7 @@
 package com.fitness.userservice.entity;
 
 import jakarta.persistence.*;
+import lombok.Data;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
@@ -8,6 +9,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "users")
+@Data // for generating getters and setters
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID )
@@ -26,8 +28,9 @@ public class User {
     private String lastname;
     
     @Enumerated(EnumType.STRING)
-    private UserRole role = UserRole.USER;
+    private UserRole role = UserRole.USER; // by default is "USER"
 
+    // Create and update timestamps will be generated automatically
     @CreationTimestamp
     private LocalDateTime createdAt;
 
