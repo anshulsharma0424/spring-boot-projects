@@ -23,11 +23,9 @@ public class UserService {
             throw new EmailAlreadyExistsException("Email already exists.");
         }
 
-        User user = UserMapper.toEntity(registerRequest);
-        User savedUser =  userRepository.save(user);
-        return UserMapper.toResponse(savedUser);
-
         // The below conversion of request(incoming) -> User -> Response(Outgoing) can be done separately in 'mapper' package
+
+        // ================================================
 
 //        User user = new User();
 //        user.setEmail(registerRequest.getEmail());
@@ -47,10 +45,20 @@ public class UserService {
 //        userResponse.setUpdatedAt(savedUser.getUpdatedAt());
 
 //        return userResponse;
+
+        // ================================================
+
+        User user = UserMapper.toEntity(registerRequest);
+        User savedUser =  userRepository.save(user);
+        return UserMapper.toResponse(savedUser);
     }
 
     public UserResponse getUserById(String id){
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException("User with UserID: " + id + " doesn't exist"));
         return UserMapper.toResponse(user);
+    }
+
+    public Boolean existsByUserId(String userId) {
+        return userRepository.existsById(userId);
     }
 }
