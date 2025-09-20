@@ -52,7 +52,7 @@ public class ActivityService {
         Activity activity = activityMapper.toEntity(activityRequest);
         Activity savedActivity = activityRepository.save(activity);
 
-        // Sending/Publishing the saved activity to kafka
+        // Sending/Publishing the saved activity to kafka -> to "aiservice"
 
         try {
             kafkaTemplate.send(topicName, savedActivity.getUserId(), savedActivity);
