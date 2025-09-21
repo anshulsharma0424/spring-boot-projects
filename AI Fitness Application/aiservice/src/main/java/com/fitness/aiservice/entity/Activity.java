@@ -11,7 +11,7 @@ import org.springframework.data.mongodb.core.mapping.Field;
 import java.time.LocalDateTime;
 import java.util.Map;
 
-//@Document(collection = "activities") since it is copied from activityservice, we don't want to create a collection again with name same as "activities"
+// @Document(collection = "activities") since it is copied from activityservice, we don't want to create a collection again with name same as "activities"
 @Data
 @Builder
 @AllArgsConstructor
