@@ -20,7 +20,7 @@ public class ActivityService {
     // for kafka
     private final KafkaTemplate<String, Activity> kafkaTemplate;
 
-    @Value("${kafka.topic.name}")
+    @Value("${kafka.topic.name}") // injecting the value of kafka-topic-name from app.props
     private String topicName;
 
     // for user validation
@@ -52,8 +52,7 @@ public class ActivityService {
         Activity activity = activityMapper.toEntity(activityRequest);
         Activity savedActivity = activityRepository.save(activity);
 
-        // Sending/Publishing the saved activity to kafka -> to "aiservice"
-
+        // Sending the saved activity to kafka -> to "aiservice"
         try {
             kafkaTemplate.send(topicName, savedActivity.getUserId(), savedActivity);
         } catch (Exception e){
