@@ -4,10 +4,8 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fitness.aiservice.entity.Activity;
 import com.fitness.aiservice.entity.Recommendation;
-import lombok.Data;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.mapper.Mapper;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -18,9 +16,7 @@ public class ProcessAiResponseService {
 
     public Recommendation generateRecommendation(Activity activity){
         String prompt = createActivityPrompt(activity);
-
         String aiResponse = geminiService.getRecommendations(prompt);
-
         log.info("RESPONSE FROM AI {}", aiResponse);
 
         return processAiResponse(activity, aiResponse);
@@ -33,9 +29,9 @@ public class ProcessAiResponseService {
             JsonNode rootNode =  objectMapper.readTree(aiResponse);
             JsonNode textNode = rootNode.path("candidates").get(0).path("content").get("parts").get(0).path("text");
             String jsonContent = textNode.asText().replaceAll("```json\\n", "").replaceAll("\\n```", "").trim();
-             log.info("PROCESSED OR CLEANED RESPONSE FROM AI {}", jsonContent);
-//            JsonNode analysisJson = objectMapper.readTree(jsonContent);
-//            JsonNode analysisNode = analysisJson.path("analysis");
+            // log.info("PROCESSED OR CLEANED RESPONSE FROM AI {}", jsonContent);
+            JsonNode analysisJson = objectMapper.readTree(jsonContent);
+            JsonNode analysisNode = analysisJson.path("analysis");
         } catch (Exception e) {
             log.error("Failed to process AI response", e);
         }
